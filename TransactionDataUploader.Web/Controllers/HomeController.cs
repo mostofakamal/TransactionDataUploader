@@ -1,26 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TransactionDataUploader.Core.Domain.Services;
 using TransactionDataUploader.Web.Models;
+using TransactionDataUploader.Web.Utils;
 
 namespace TransactionDataUploader.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITransactionDataHandler _transactionDataHandler;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ITransactionDataHandler transactionDataHandler)
         {
             _logger = logger;
+            _transactionDataHandler = transactionDataHandler;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var model = new TransactionDataFileModel();
+            return View(model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Save(TransactionDataFileModel transactionDataModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var transactionFile = transactionDataModel.File;
+                if (transactionFile == null || transactionFile.Length == 0)
+                {
+                    return Content("File not selected");
+                }
+
+                var fileReadResult = await FileUtility.ReadFormFileAsync(transactionFile);
+                _transactionDataHandler.ParseFileContentAndSaveData(fileReadResult.Content,fileReadResult.FileType);
+
+                return View("Index",new TransactionDataFileModel());
+            }
+            return View(nameof(Index), transactionDataModel);
+
         }
 
         public IActionResult ShowData()

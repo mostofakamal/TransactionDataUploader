@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TransactionDataUploader.Core.Domain.Services;
+using TransactionDataUploader.Core.Infrastructure.Persistence;
 
 namespace TransactionDataUploader.Web
 {
@@ -22,6 +24,8 @@ namespace TransactionDataUploader.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ITransactionDataHandler, TransactionDataHandler>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddControllersWithViews();
         }
 
