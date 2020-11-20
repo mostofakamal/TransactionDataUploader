@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TransactionDataUploader.Core.Domain.Models;
 
-namespace TransactionDataUploader.Core.Infrastructure.Repository
+namespace TransactionDataUploader.Core.Infrastructure.Persistence
 {
     public class TransactionRepository : Repository<TransactionEntry>, ITransactionRepository
     {

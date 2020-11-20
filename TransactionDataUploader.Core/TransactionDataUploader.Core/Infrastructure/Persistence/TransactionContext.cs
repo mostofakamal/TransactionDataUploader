@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TransactionDataUploader.Core.Domain.Models;
 
-namespace TransactionDataUploader.Core.Infrastructure
+namespace TransactionDataUploader.Core.Infrastructure.Persistence
 {
     public class TransactionContext : DbContext
     {

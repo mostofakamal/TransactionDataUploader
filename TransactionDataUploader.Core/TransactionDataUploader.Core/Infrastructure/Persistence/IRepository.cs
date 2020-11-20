@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TransactionDataUploader.Core.Infrastructure.Repository
+namespace TransactionDataUploader.Core.Infrastructure.Persistence
 {
     public interface IRepository<TEntity> where TEntity : class, new()
     {

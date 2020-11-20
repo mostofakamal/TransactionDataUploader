@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransactionDataUploader.Core.Domain.Models;
 
-namespace TransactionDataUploader.Core.Infrastructure.Repository
+namespace TransactionDataUploader.Core.Infrastructure.Persistence
 {
     public interface ITransactionRepository : IRepository<TransactionEntry>
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TransactionDataUploader.Core.Infrastructure.Repository
+namespace TransactionDataUploader.Core.Infrastructure.Persistence
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
