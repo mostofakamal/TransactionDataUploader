@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,16 +33,31 @@ namespace TransactionDataUploader.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var transactionFile = transactionDataModel.File;
-                if (transactionFile == null || transactionFile.Length == 0)
+                try
                 {
-                    return Content("File not selected");
+                    var transactionFile = transactionDataModel.File;
+                    if (transactionFile == null || transactionFile.Length == 0)
+                    {
+                        return Content("File not selected");
+                    }
+
+                    var fileReadResult = await FileUtility.ReadFormFileAsync(transactionFile);
+                    var errors =
+                        await _transactionDataHandler.ParseFileContentAndSaveData(fileReadResult.Content,
+                            fileReadResult.FileType);
+                    if (errors.Any())
+                    {
+                        var model = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = string.Join(",",errors) };
+                        return View("Error", model);
+                    }
+
+                    return View("Index", new TransactionDataFileModel());
                 }
-
-                var fileReadResult = await FileUtility.ReadFormFileAsync(transactionFile);
-                _transactionDataHandler.ParseFileContentAndSaveData(fileReadResult.Content,fileReadResult.FileType);
-
-                return View("Index",new TransactionDataFileModel());
+                catch(Exception ex)
+                {
+                    var model = new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = ex.Message};
+                    return View("Error", model);
+                }
             }
             return View(nameof(Index), transactionDataModel);
 

@@ -30,7 +30,7 @@ namespace TransactionDataUploader.Web.Attributes
 
         public string GetErrorMessage()
         {
-            return $"This selected file extension is not allowed!";
+            return $"Unknown format";
         }
     }
 }

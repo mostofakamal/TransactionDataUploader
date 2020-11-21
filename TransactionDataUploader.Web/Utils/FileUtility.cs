@@ -35,7 +35,7 @@ namespace TransactionDataUploader.Web.Utils
 
         private static FileType GetFileType(IFormFile file)
         {
-            var extension = Path.GetExtension(file.FileName)?.ToLower();
+            var extension = Path.GetExtension(file.FileName)?.Replace(".","").ToLower();
             switch (extension)
             {
                 case "xml":

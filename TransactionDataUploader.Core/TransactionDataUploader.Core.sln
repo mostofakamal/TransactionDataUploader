@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionDataUploader.Core", "TransactionDataUploader.Core\TransactionDataUploader.Core.csproj", "{6D8AB143-961D-478F-9156-E14C9F3A477E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionDataUploader.Core", "TransactionDataUploader.Core\TransactionDataUploader.Core.csproj", "{6D8AB143-961D-478F-9156-E14C9F3A477E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionDataUploader.Web", "..\TransactionDataUploader.Web\TransactionDataUploader.Web.csproj", "{CF9FBECD-1048-47D4-BF82-3FE5CF3CF730}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionDataUploader.Web", "..\TransactionDataUploader.Web\TransactionDataUploader.Web.csproj", "{CF9FBECD-1048-47D4-BF82-3FE5CF3CF730}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionDataUploader.Tests", "..\TransactionDataUploader.Tests\TransactionDataUploader.Tests.csproj", "{7338F81F-C71A-437A-A8C6-87F945BE9D23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionDataUploader.Tests", "..\TransactionDataUploader.Tests\TransactionDataUploader.Tests.csproj", "{7338F81F-C71A-437A-A8C6-87F945BE9D23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbScripts", "DbScripts", "{238E0425-E690-4EEC-A512-C7323400AE13}"
+	ProjectSection(SolutionItems) = preProject
+		..\Scripts\Initial_Migration_Script.sql = ..\Scripts\Initial_Migration_Script.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

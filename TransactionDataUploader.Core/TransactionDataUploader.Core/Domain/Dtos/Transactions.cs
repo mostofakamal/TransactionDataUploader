@@ -102,12 +102,12 @@
     public partial class TransactionsTransactionPaymentDetails
     {
 
-        private decimal amountField;
+        private string amountField;
 
         private string currencyCodeField;
 
         /// <remarks/>
-        public decimal Amount
+        public string Amount
         {
             get
             {

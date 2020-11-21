@@ -8,4 +8,5 @@ namespace TransactionDataUploader.Web.Models
 
         public FileType FileType { get; set; }
     }
+
 }

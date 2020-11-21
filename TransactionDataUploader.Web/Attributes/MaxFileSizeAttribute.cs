@@ -27,7 +27,7 @@ namespace TransactionDataUploader.Web.Attributes
 
         public string GetErrorMessage()
         {
-            return $"Maximum allowed file size is { _maxFileSize} bytes.";
+            return $"Maximum allowed file size is { _maxFileSize/(1024*1024)} MB.";
         }
     }
 }

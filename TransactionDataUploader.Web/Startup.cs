@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TransactionDataUploader.Core.Domain.Services;
 using TransactionDataUploader.Core.Infrastructure.Persistence;
+using TransactionDataUploader.Web.Infrastructure;
 
 namespace TransactionDataUploader.Web
 {
@@ -24,8 +25,8 @@ namespace TransactionDataUploader.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ITransactionDataHandler, TransactionDataHandler>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<ITransactionDataHandler, TransactionDataHandler>();
+            services.RegisterDbAccess(Configuration);
             services.AddControllersWithViews();
         }
 

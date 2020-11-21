@@ -43,7 +43,7 @@ namespace TransactionDataUploader.Core.Infrastructure.Persistence
                 transactions = transactions.Where(x => x.TransactionStatusId == status.Value);
             }
 
-            return transactions.ToListAsync();
+            return transactions.Include(x=>x.TransactionStatus).ToListAsync();
         }
 
     }
