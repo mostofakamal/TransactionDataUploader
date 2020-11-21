@@ -19,7 +19,7 @@ namespace TransactionDataUploader.Core.Domain.Validators
                 System.Globalization.DateTimeStyles.None, out var number)).WithMessage(ErrorMessages.InvalidDateTime);
 
             RuleFor(x => x.Status).NotEmpty().Must(x => StaticDataProvider.GetCsvDataTransactionsStatues().Contains(x))
-                .WithMessage($"{{PropertyValue}} not a valid Transaction Status for CSV Transaction Data");
+                .WithMessage($"{{PropertyValue}} not a valid Transaction Status for CSV Transaction Data. ");
         }
     }
 }

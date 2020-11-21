@@ -57,7 +57,7 @@ namespace TransactionDataUploader.Core.Domain.Services
                 var result = Validator.Validate(transactionData);
                 if (!result.IsValid)
                 {
-                    errors.Add($"Error in data item:  {data.IndexOf(transactionData)} Error Details: {string.Join(",", result.Errors.Select(x => x.ErrorMessage).ToList())} {Environment.NewLine}");
+                    errors.Add($"Error in data item:  {data.IndexOf(transactionData)} Error Details: {string.Join("\n", result.Errors.Select(x => x.ErrorMessage).ToList())} {Environment.NewLine}");
                 }
             }
 

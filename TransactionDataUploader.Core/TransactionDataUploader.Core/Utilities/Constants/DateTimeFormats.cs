@@ -9,13 +9,13 @@
     public static class ErrorMessages
     {
         public const string TransactionIdLengthValidationError =
-            "Transaction Id Can not be greater than 50 in length";
+            "Transaction Id Can not be greater than 50 in length. ";
 
-        public const string AmountNotValidError = "Amount must be a valid decimal number";
+        public const string AmountNotValidError = "Amount must be a valid decimal number. ";
 
-        public const string InvalidCurrencyCodeError = "Currency Code is not a Valid ISO4217 format code";
+        public const string InvalidCurrencyCodeError = "Currency Code is not a Valid ISO4217 format code. ";
 
-        public const string InvalidDateTime = "Invalid Datetime";
+        public const string InvalidDateTime = "Invalid Datetime. ";
 
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,32 +37,40 @@ namespace TransactionDataUploader.Web.Controllers
             {
                 try
                 {
-                    var transactionFile = transactionDataModel.File;
-                    if (transactionFile == null || transactionFile.Length == 0)
-                    {
-                        return Content("File not selected");
-                    }
-
-                    var fileReadResult = await FileUtility.ReadFormFileAsync(transactionFile);
-                    var errors =
-                        await _transactionDataHandler.ParseFileContentAndSaveData(fileReadResult.Content,
-                            fileReadResult.FileType);
+                    var errors = await ProcessFile(transactionDataModel);
                     if (errors.Any())
                     {
-                        var model = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = string.Join(",",errors) };
+                        var model = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = string.Join('\n',errors) };
                         return View("Error", model);
                     }
 
+                    ViewData["message"] = "File uploaded successfully!";
                     return View("Index", new TransactionDataFileModel());
                 }
                 catch(Exception ex)
                 {
+                    _logger.LogWarning($"Error in file upload. Error Message: {ex.Message} . Details: {ex} ");
                     var model = new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = ex.Message};
                     return View("Error", model);
                 }
             }
             return View(nameof(Index), transactionDataModel);
 
+        }
+
+        private async Task<IList<string>> ProcessFile(TransactionDataFileModel transactionDataModel)
+        {
+            var transactionFile = transactionDataModel.File;
+            if (transactionFile == null || transactionFile.Length == 0)
+            {
+                throw new InvalidOperationException("File is not selected or is empty");
+            }
+
+            var fileReadResult = await FileUtility.ReadFormFileAsync(transactionFile);
+            var errors =
+                await _transactionDataHandler.ParseFileContentAndSaveData(fileReadResult.Content,
+                    fileReadResult.FileType);
+            return errors;
         }
 
         public async Task<IActionResult> Search(string currency,string status,string fromDate,string toDate)

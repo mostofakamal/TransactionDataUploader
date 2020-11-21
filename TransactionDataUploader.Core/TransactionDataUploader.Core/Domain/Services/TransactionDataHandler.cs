@@ -29,6 +29,7 @@ namespace TransactionDataUploader.Core.Domain.Services
             {
                 await _transactionRepository.AddRangeAsync(result.Data.ToList());
             }
+            _logger.LogWarning($"Validation error during file upload of type: {fileType} .  Errors: {string.Join(",",result.Errors)}  , FileContent: {content} ");
 
             return result.Errors;
         }
