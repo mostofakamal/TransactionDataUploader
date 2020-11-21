@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionDataUploader.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbScripts", "DbScripts", "{238E0425-E690-4EEC-A512-C7323400AE13}"
 	ProjectSection(SolutionItems) = preProject
-		..\Scripts\Initial_Migration_Script.sql = ..\Scripts\Initial_Migration_Script.sql
+		..\DbScripts\Initial_Migration_Script.sql = ..\DbScripts\Initial_Migration_Script.sql
 	EndProjectSection
 EndProject
 Global

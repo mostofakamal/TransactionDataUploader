@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TransactionDataUploader.Core.Domain.Models;
 using TransactionDataUploader.Core.Domain.Services;
 using TransactionDataUploader.Web.Models;
 using TransactionDataUploader.Web.Utils;
@@ -61,6 +62,15 @@ namespace TransactionDataUploader.Web.Controllers
             }
             return View(nameof(Index), transactionDataModel);
 
+        }
+
+        public async Task<IActionResult> Search(string currency,string status,string fromDate,string toDate)
+        {
+            var isValidStatus = Enum.TryParse(status, out TransactionStatusId statusId);
+            var startDate = DateTimeUtility.ParseDateFromParam(fromDate);
+            var endDate = DateTimeUtility.ParseDateFromParam(toDate);
+            var result = await _transactionDataHandler.GetTransactions(currency, startDate, endDate, isValidStatus? (TransactionStatusId?)statusId: null);
+            return View("ShowData", result);
         }
 
         public IActionResult ShowData()
