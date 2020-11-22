@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "View Transaction Data";
+}
+<h1>@ViewData["Title"]</h1>
+@model List<TransactionDataUploader.Core.Domain.Dtos.TransactionDisplayResultDto>
+
+<p>Transaction Data</p>
+<form asp-action="Search" method="GET">
+    <div class="form-group">
+        <label>Currency</label>
+        <input type="text" class="form-control" name="currency" placeholder="Enter Currency">
+    </div>
+
+    <div class="form-group">
+        <label>From Date</label>
+        <input type="text" class="form-control" name="fromDate" placeholder="yyyyMMdd">
+    </div>
+
+    <div class="form-group">
+        <label>To Date</label>
+        <input type="text" class="form-control" name="toDate" placeholder="yyyyMMdd">
+    </div>
+
+    <div class="form-group">
+        <label>Status</label>
+        <input type="text" class="form-control" name="status" placeholder="Enter Status">
+    </div>
+    <input type="submit" value="Search" class="btn btn-primary" />
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Payment</th>
+            <th>Status</th>
+        </tr>
+        @foreach (var data in Model)
+        {
+            <tr>
+                <td>@data.Id</td>
+                <td>@data.Payment</td>
+                <td>@data.Status</td>
+            </tr>
+        }
+    </table>
+}

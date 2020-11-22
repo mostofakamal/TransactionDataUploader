@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model TransactionDataFileModel
+
+<div class="text-center">
+    <form method="post" asp-action="Save" asp-controller="Home" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <table cellpadding="2" cellspacing="2">
+            <tr>
+                <td>Upload Transaction Data file: </td>
+                <td>
+                    <input type="file" asp-for="File" name="File" />
+                    <span asp-validation-for="File" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" value="Upload" /></td>
+                @if (!string.IsNullOrEmpty(ViewData["message"]?.ToString()))
+                {
+                    <div class="alert alert-success">
+                        @ViewData["message"].ToString()
+                    </div>
+                }
+               
+            </tr>
+        </table>
+    </form>
+
+</div>
