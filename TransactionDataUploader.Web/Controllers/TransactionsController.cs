@@ -19,6 +19,7 @@ namespace TransactionDataUploader.Web.Controllers
             _transactionDataHandler = transactionDataHandler;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string currency, [FromQuery] string fromDate, [FromQuery] string toDate, [FromQuery] string status)
         {
             var startDate = DateTimeUtility.ParseDateFromParam(fromDate);

@@ -22,9 +22,9 @@ namespace TransactionDataUploader.Core.Domain.Services
                 byte[] byteArray = Encoding.UTF8.GetBytes(content);
                 MemoryStream stream = new MemoryStream(byteArray);
 
-                var s = new System.Xml.Serialization.XmlSerializer(typeof(Transactions));
+                var xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Transactions));
                 var xmlReader = XmlReader.Create(stream);
-                var transactions = (Transactions) s.Deserialize(xmlReader);
+                var transactions = (Transactions)xmlSerializer.Deserialize(xmlReader);
                 return transactions.Transaction.Select(x => new TransactionDataDto()
                 {
                     Amount = x.PaymentDetails.Amount.ToString(CultureInfo.InvariantCulture),
@@ -36,11 +36,10 @@ namespace TransactionDataUploader.Core.Domain.Services
             }
             catch (Exception)
             {
-                //TODO: Log error
                 return null;
             }
 
-          
+
         }
 
         protected override AbstractValidator<TransactionDataDto> Validator { get; } = new TransactionDataValidatorForXml();
