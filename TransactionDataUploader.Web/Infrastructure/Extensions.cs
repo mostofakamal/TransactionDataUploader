@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TransactionDataUploader.Core.Infrastructure.Persistence;
@@ -18,5 +19,16 @@ namespace TransactionDataUploader.Web.Infrastructure
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             return services;
         }
+
+        public static IApplicationBuilder InitializeDatabase(this IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
+            {
+                scope?.ServiceProvider.GetRequiredService<TransactionContext>().Database.Migrate();
+            }
+            return app;
+        }
     }
+
+
 }

@@ -14,11 +14,11 @@ namespace TransactionDataUploader.Core.Domain.Services
         {
             // Parse 
             var dataResult = new DataResult<TResult>();
-            
+
             var result = ParseData(content);
 
             //Validate
-            if (result == null)
+            if (result == null || result.Any(x => x == null))
             {
                 dataResult.Errors = new List<string>()
                 {
@@ -26,7 +26,7 @@ namespace TransactionDataUploader.Core.Domain.Services
                 };
                 return dataResult;
             }
-            
+
             var validationErrors = ValidateData(result);
 
             if (validationErrors.Any())
@@ -34,7 +34,7 @@ namespace TransactionDataUploader.Core.Domain.Services
                 dataResult.Errors = validationErrors;
                 return dataResult;
             }
-            
+
             // Map
             var mappedResult = Map(result);
             dataResult.Data = mappedResult;
@@ -50,7 +50,7 @@ namespace TransactionDataUploader.Core.Domain.Services
             var errors = new List<string>();
             if (data == null)
             {
-               throw new ArgumentException("Data to validate is null",nameof(data));
+                throw new ArgumentException("Data to validate is null", nameof(data));
             }
             foreach (var transactionData in data)
             {
