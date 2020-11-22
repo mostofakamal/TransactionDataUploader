@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TransactionDataUploader.Core.Domain.Models;
@@ -35,24 +36,15 @@ namespace TransactionDataUploader.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                var errors = await ProcessFile(transactionDataModel);
+                if (errors.Any())
                 {
-                    var errors = await ProcessFile(transactionDataModel);
-                    if (errors.Any())
-                    {
-                        var model = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = string.Join('\n',errors) };
-                        return View("Error", model);
-                    }
-
-                    ViewData["message"] = "File uploaded successfully!";
-                    return View("Index", new TransactionDataFileModel());
-                }
-                catch(Exception ex)
-                {
-                    _logger.LogWarning($"Error in file upload. Error Message: {ex.Message} . Details: {ex} ");
-                    var model = new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = ex.Message};
+                    var model = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorMessage = string.Join('\n', errors) };
                     return View("Error", model);
                 }
+
+                ViewData["message"] = "File uploaded successfully!";
+                return View("Index", new TransactionDataFileModel());
             }
             return View(nameof(Index), transactionDataModel);
 
@@ -73,12 +65,12 @@ namespace TransactionDataUploader.Web.Controllers
             return errors;
         }
 
-        public async Task<IActionResult> Search(string currency,string status,string fromDate,string toDate)
+        public async Task<IActionResult> Search(string currency, string status, string fromDate, string toDate)
         {
             var isValidStatus = Enum.TryParse(status, out TransactionStatusId statusId);
             var startDate = DateTimeUtility.ParseDateFromParam(fromDate);
             var endDate = DateTimeUtility.ParseDateFromParam(toDate);
-            var result = await _transactionDataHandler.GetTransactions(currency, startDate, endDate, isValidStatus? (TransactionStatusId?)statusId: null);
+            var result = await _transactionDataHandler.GetTransactions(currency, startDate, endDate, isValidStatus ? (TransactionStatusId?)statusId : null);
             return View("ShowData", result);
         }
 
@@ -90,6 +82,13 @@ namespace TransactionDataUploader.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            var exceptionHandlerPathFeature =
+                HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            ViewBag.ExceptionPath = exceptionHandlerPathFeature.Path;
+            ViewBag.ExceptionMessage = exceptionHandlerPathFeature.Error.Message;
+            ViewBag.StackTrace = exceptionHandlerPathFeature.Error.StackTrace;
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
